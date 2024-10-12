@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Points of Interest Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <style>
+    #map {
+      height: 800px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script>
+        // Initialize the map
+        const map = L.map('map').setView([31.0461, 34.8516], 7);
+
+        // Add a tile layer (you can change this to any other tile provider)
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        let coors = [];
+
+        // Fetch COOR data once at the beginning
+        fetch('/coors')
+            .then(response => response.json())
+            .then(data => {
+                coors = data;
+            })
+            .catch(error => console.error('Error fetching COOR data:', error));
+
+        function fetchAndUpdatePOIs () { 
+          // compare timestamps to remove irrelevant markers
+          fetch('/pois')
+              .then(response => response.json())
+              .then(pois => {
+                  pois.forEach(poi => {
+                    // console.log(poi)
+                    let coor = coors.find(i => {
+                        // console.log(i)
+                        return (
+                          poi.name === i.name ||
+                          poi.name.includes(i.name) ||
+                          poi.name.includes(i.name_atl_1) ||
+                          poi.name.includes(i.name_atl_2) ||
+                          poi.name.includes(i.name_atl_3)
+                        )
+                    });
+
+                    if (coor) {
+                      console.log(poi, coor)
+                      L.marker([coor.lat, coor.lon])
+                          .addTo(map)
+                          .bindPopup(`<b>${poi.name}</b><br>${poi.title}<br>${poi.desc}<br>${poi.timestamp}`);
+                    }
+                  });
+              })
+              .catch(error => console.error('Error fetching POI data:', error));
+        }
+
+        setInterval(fetchAndUpdatePOIs, 10000);
+
+        // Initial fetch
+        fetchAndUpdatePOIs();
+  </script>
+</body>
+
+</html>

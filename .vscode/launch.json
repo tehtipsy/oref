@@ -1,0 +1,23 @@
+    {
+      "configurations": [
+        
+        {
+          "name": "NPM RUN DEBUG",
+          "type": "node",
+          "request": "launch",
+          "cwd": "${workspaceRoot}",
+          "runtimeExecutable": "npm",
+          "runtimeArgs": [
+            "run",
+            "debug"
+          ],
+          "autoAttachChildProcesses": true,
+          "preLaunchTask": "${defaultBuildTask}",
+          "skipFiles": [
+            "<node_internals>/**",
+            "node_modules/**"
+          ],
+          "console": "integratedTerminal",
+        }
+      ]
+    }

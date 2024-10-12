@@ -1,0 +1,26 @@
+{
+  "name": "red-alert",
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "start": "node --loader ts-node/esm server/index.ts",
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "stop": "echo \"Error: no stop specified\" && exit 1",
+    "debug": "node --loader ts-node/esm server/index.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.7.5",
+    "@eslint/js": "^9.8.0",
+    "@types/eslint__js": "^8.42.3",
+    "eslint": "^9.8.0",
+    "ts-node": "^10.9.2",
+    "typescript": "5.4.5",
+    "typescript-eslint": "^8.0.1"
+  }
+}
